@@ -5,6 +5,6 @@ export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
   @Get('/:companyId')
   async getCompany(@Param('companyId') companyId: string) {
-    return this.companyService.getDataCompanyAndChild(companyId);
+    return this.companyService.getDataCompanyAndChildren(companyId);
   }
 }

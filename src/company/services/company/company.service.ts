@@ -17,7 +17,7 @@ export class CompanyService {
   getDataTravels(): Promise<[Travel]> {
     return this.travelService.getDataTravelsFromAPI();
   }
-  async getDataCompanyAndChild(companyId: string) {
+  async getDataCompanyAndChildren(companyId: string) {
     const [companies, travels] = await Promise.all([
       this.getDataCompaniesFromAPI(),
       this.getDataTravels(),
@@ -26,8 +26,13 @@ export class CompanyService {
     if (companyIdx === -1) {
       throw new BadRequestException(`company does not exist`);
     }
-    const children = this.getChildrenOfCompany(companyId, companies, travels);
-    const cost = this.calculateCost(children, travels, companyId);
+    const travelsCost = this.travelService.generateTravelCost(travels);
+    const children = this.getChildrenOfCompany(
+      companyId,
+      companies,
+      travelsCost,
+    );
+    const cost = this.calculateCost(children, travelsCost, companyId);
     const company = {
       ...companies[companyIdx],
       cost,
@@ -39,7 +44,7 @@ export class CompanyService {
   getChildrenOfCompany(
     companyId: string,
     companies: Company[],
-    travels: Travel[],
+    travelsCost: Object,
   ): Children[] {
     const children = [];
     for (let i = 0; i < companies.length; i++) {
@@ -48,16 +53,16 @@ export class CompanyService {
         const childrenOfCompany = this.getChildrenOfCompany(
           companyChild.id,
           companies,
-          travels,
+          travelsCost,
         );
-        const cost = this.calculateCost(
+        const totalCost = this.calculateCost(
           childrenOfCompany,
-          travels,
+          travelsCost,
           companyChild.id,
         );
         children.push({
           ...companyChild,
-          cost,
+          cost: totalCost,
           children: childrenOfCompany,
         });
       }
@@ -66,17 +71,14 @@ export class CompanyService {
   }
   calculateCost(
     children: Children[],
-    travels: Travel[],
+    travelsCost: Object,
     companyId: string,
   ): number {
     const costOfAlChildren = children.reduce((acc: number, el) => {
       acc += el.cost;
       return acc;
     }, 0);
-    const costOfAllEmployees = this.travelService.calculateCostOfAllEmployees(
-      travels,
-      companyId,
-    );
+    const costOfAllEmployees = travelsCost[companyId];
     return costOfAlChildren + costOfAllEmployees;
   }
 }

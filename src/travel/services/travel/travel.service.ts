@@ -10,6 +10,18 @@ export class TravelService {
     return this.apiService.getDataWebprovise(this.resourceApiEndpoint);
   }
 
+  generateTravelCost(travels: Travel[]) {
+    const travelCosts = {};
+    travels.forEach((travel) => {
+      if (travelCosts[travel.companyId]) {
+        travelCosts[travel.companyId] += parseFloat(travel.price);
+      } else {
+        travelCosts[travel.companyId] = parseFloat(travel.price);
+      }
+    });
+    return travelCosts;
+  }
+
   calculateCostOfAllEmployees(travels: Travel[], companyId: string): number {
     return travels.reduce((acc, el) => {
       if (el.companyId === companyId) {
