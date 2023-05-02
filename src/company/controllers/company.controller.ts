@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { CompanyService } from 'src/company/services/company/company.service';
+import { CompanyService } from 'src/company/services/company.service';
 @Controller('companies')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}

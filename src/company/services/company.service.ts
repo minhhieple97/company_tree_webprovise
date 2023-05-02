@@ -6,7 +6,7 @@ import {
   CompanyWithChildren,
 } from 'src/company/interfaces/company.interface';
 import { Travel } from 'src/travel/interface/travel.interface';
-import { TravelService } from 'src/travel/services/travel/travel.service';
+import { TravelService } from 'src/travel/services/travel.service';
 
 @Injectable()
 export class CompanyService {
