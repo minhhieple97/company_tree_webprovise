@@ -1,12 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ApiService } from 'src/api/services/api/api.service';
-import {
-  Children,
-  Company,
-  CompanyWithChildren,
-} from 'src/company/interfaces/company.interface';
 import { Travel } from 'src/travel/interface/travel.interface';
 import { TravelService } from 'src/travel/services/travel.service';
+import { Company } from '../models/company.model';
 
 @Injectable()
 export class CompanyService {
@@ -18,9 +14,7 @@ export class CompanyService {
   getDataCompaniesFromAPI(): Promise<Company[]> {
     return this.apiService.getDataWebprovise(this.resourceApiEndpoint);
   }
-  async getDataCompanyAndChildren(
-    companyId: string,
-  ): Promise<CompanyWithChildren[]> {
+  async getDataCompanyAndChildren(companyId: string): Promise<Company[]> {
     const [companies, travels] = (await Promise.all([
       this.getDataCompaniesFromAPI(),
       this.travelService.getDataTravelsFromAPI(),
@@ -51,7 +45,7 @@ export class CompanyService {
     companyId: string,
     companies: Company[],
     travelsCost: Object,
-  ): Children[] {
+  ): Company[] {
     const children = [];
     for (let i = 0; i < companies.length; i++) {
       const companyChild = companies[i];
@@ -73,7 +67,7 @@ export class CompanyService {
     }
     return children;
   }
-  calculateChildrenCost(children: Children[]): number {
+  calculateChildrenCost(children: Company[]): number {
     return children.reduce((acc: number, el) => {
       acc += el.cost;
       return acc;
