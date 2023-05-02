@@ -1,4 +1,4 @@
-## Setting up the .env file and run project
+## Setting up the .env file
 
 This project uses environment variables to configure various settings. To set up the environment variables for this project, you will need to create a `.env` file in the root of the project directory.
 
