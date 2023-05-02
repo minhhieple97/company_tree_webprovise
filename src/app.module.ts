@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { CompanyModule } from './company/company.module';
 import { TravelModule } from './travel/travel.module';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -21,17 +19,13 @@ import * as Joi from 'joi';
     CompanyModule,
     TravelModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
+      autoSchemaFile: true,
       driver: ApolloDriver,
-      playground: false,
-      typePaths: ['./**/*.graphql'],
-      definitions: {
-        path: join(process.cwd(), 'src/graphql.ts'),
-        outputAs: 'class',
-      },
+      playground: true,
     }),
     ApiModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

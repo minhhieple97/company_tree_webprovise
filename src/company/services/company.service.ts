@@ -20,7 +20,7 @@ export class CompanyService {
   }
   async getDataCompanyAndChildren(
     companyId: string,
-  ): Promise<CompanyWithChildren> {
+  ): Promise<CompanyWithChildren[]> {
     const [companies, travels] = (await Promise.all([
       this.getDataCompaniesFromAPI(),
       this.travelService.getDataTravelsFromAPI(),
@@ -44,7 +44,7 @@ export class CompanyService {
       cost: totalCost,
       children,
     };
-    return companyWithChildren;
+    return [companyWithChildren];
   }
 
   getChildrenOfCompany(
