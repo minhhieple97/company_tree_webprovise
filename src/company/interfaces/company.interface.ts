@@ -1,17 +1,20 @@
-interface Company {
+interface Entity {
   id: string;
   createdAt: string;
   name: string;
   parentId: string;
 }
 
-interface Children {
-  id: string;
-  createdAt: string;
-  name: string;
-  parentId: string;
+interface Company extends Entity {}
+
+interface Children extends Entity {
   cost: number;
   Children: Children[];
 }
 
-export { Company, Children };
+interface CompanyWithChildren extends Company {
+  cost: number;
+  children: Children[];
+}
+
+export { Company, Children, CompanyWithChildren };

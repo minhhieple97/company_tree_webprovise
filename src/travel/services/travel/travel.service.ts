@@ -10,7 +10,7 @@ export class TravelService {
     return this.apiService.getDataWebprovise(this.resourceApiEndpoint);
   }
 
-  generateTravelCost(travels: Travel[]) {
+  generateTravelsCost(travels: Travel[]) {
     const travelCosts = {};
     travels.forEach((travel) => {
       if (travelCosts[travel.companyId]) {

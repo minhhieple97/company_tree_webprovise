@@ -1,6 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ApiService } from 'src/api/services/api/api.service';
-import { Children, Company } from 'src/company/interfaces/company.interface';
+import {
+  Children,
+  Company,
+  CompanyWithChildren,
+} from 'src/company/interfaces/company.interface';
 import { Travel } from 'src/travel/interface/travel.interface';
 import { TravelService } from 'src/travel/services/travel/travel.service';
 
@@ -11,34 +15,36 @@ export class CompanyService {
     private readonly apiService: ApiService,
     private readonly travelService: TravelService,
   ) {}
-  getDataCompaniesFromAPI(): Promise<[Company]> {
+  getDataCompaniesFromAPI(): Promise<Company[]> {
     return this.apiService.getDataWebprovise(this.resourceApiEndpoint);
   }
-  getDataTravels(): Promise<[Travel]> {
-    return this.travelService.getDataTravelsFromAPI();
-  }
-  async getDataCompanyAndChildren(companyId: string) {
-    const [companies, travels] = await Promise.all([
+  async getDataCompanyAndChildren(
+    companyId: string,
+  ): Promise<CompanyWithChildren> {
+    const [companies, travels] = (await Promise.all([
       this.getDataCompaniesFromAPI(),
-      this.getDataTravels(),
-    ]);
+      this.travelService.getDataTravelsFromAPI(),
+    ])) as [Company[], Travel[]];
     const companyIdx = companies.findIndex((el) => el.id === companyId);
     if (companyIdx === -1) {
       throw new BadRequestException(`company does not exist`);
     }
-    const travelsCost = this.travelService.generateTravelCost(travels);
+    const company = companies[companyIdx];
+    const travelsCost = this.travelService.generateTravelsCost(travels);
     const children = this.getChildrenOfCompany(
       companyId,
       companies,
       travelsCost,
     );
-    const cost = this.calculateCost(children, travelsCost, companyId);
-    const company = {
-      ...companies[companyIdx],
-      cost,
+    const childrenCost = this.calculateChildrenCost(children);
+    const employeesCost = travelsCost[companyId];
+    const totalCost = childrenCost + employeesCost;
+    const companyWithChildren = {
+      ...company,
+      cost: totalCost,
       children,
     };
-    return company;
+    return companyWithChildren;
   }
 
   getChildrenOfCompany(
@@ -55,11 +61,9 @@ export class CompanyService {
           companies,
           travelsCost,
         );
-        const totalCost = this.calculateCost(
-          childrenOfCompany,
-          travelsCost,
-          companyChild.id,
-        );
+        const childrenCost = this.calculateChildrenCost(childrenOfCompany);
+        const employeesCost = travelsCost[companyChild.id];
+        const totalCost = childrenCost + employeesCost;
         children.push({
           ...companyChild,
           cost: totalCost,
@@ -69,16 +73,10 @@ export class CompanyService {
     }
     return children;
   }
-  calculateCost(
-    children: Children[],
-    travelsCost: Object,
-    companyId: string,
-  ): number {
-    const costOfAlChildren = children.reduce((acc: number, el) => {
+  calculateChildrenCost(children: Children[]): number {
+    return children.reduce((acc: number, el) => {
       acc += el.cost;
       return acc;
     }, 0);
-    const costOfAllEmployees = travelsCost[companyId];
-    return costOfAlChildren + costOfAllEmployees;
   }
 }
