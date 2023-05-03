@@ -1,4 +1,4 @@
-## Setting up the .env file
+# Setting up the .env file
 
 This project uses environment variables to configure various settings. To set up the environment variables for this project, you will need to create a `.env` file in the root of the project directory.
 
@@ -11,9 +11,13 @@ An example `.env.example` file is provided in the root of the project directory.
 
 Once you have completed these steps, your `.env` file will be set up and ready to use.
 
-## Running the project
+# Running the project
 
-After setting up the `.env` file, you can run the project using the `npm run start:dev` command. This will start the development server and allow you to access the project at `http://localhost:3000`.
+After setting up the `.env` file, you can run the project by following these commands.
+
+- Run `npm install` to install the dependencies
+- Run `npm run start:dev` to run project
+  This will start the development server and allow you to access the project at `http://localhost:3000`.
 
 # Integration Test for Nest.js GraphQL
 
@@ -30,7 +34,7 @@ This project uses nest.js, graphql, supertest-graphql and graphql-tag to set up 
 - Run `npm install` to install the dependencies
 - Run `npm run test:int` to run the integration test
 
-# Example GraphQL Query
+## Example GraphQL Query
 
 Here is an example of a GraphQL query and its response:
 
