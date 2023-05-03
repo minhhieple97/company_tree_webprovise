@@ -15,6 +15,21 @@ Once you have completed these steps, your `.env` file will be set up and ready t
 
 After setting up the `.env` file, you can run the project using the `npm run start:dev` command. This will start the development server and allow you to access the project at `http://localhost:3000`.
 
+# Integration Test for Nest.js GraphQL
+
+This project uses nest.js, graphql, supertest-graphql and graphql-tag to set up and run integration tests for a graphql endpoint.
+
+## Prerequisites
+
+- Node.js and npm installed
+- A graphql endpoint running on http://localhost:3000/graphql
+
+## Installation
+
+- Clone this repository and navigate to the project folder
+- Run `npm install` to install the dependencies
+- Run `npm run test:int` to run the integration test
+
 # Example GraphQL Query
 
 Here is an example of a GraphQL query and its response:
