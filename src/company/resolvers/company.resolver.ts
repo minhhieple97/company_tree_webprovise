@@ -1,7 +1,8 @@
+import { Company } from './../models/company.model';
+import { CompanyService } from './../services/company.service';
+import { GetCompanyDTO } from './../dto/get-company.dto';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { Company } from '../models/company.model';
-import { CompanyService } from '../services/company.service';
-import { GetCompanyDTO } from '../dto/get-company.dto';
+
 @Resolver(() => [Company])
 export class CompaniesResolver {
   constructor(private readonly companyService: CompanyService) {}

@@ -1,8 +1,8 @@
+import { Company } from './../../models/company.model';
+import { IntegrationTestManager } from './../../../test/integration-test-manager';
 import gql from 'graphql-tag';
-import { IntegrationTestManager } from 'src/test/integration-test-manager';
 import request from 'supertest-graphql';
 import { testCompany } from '../data/dump-data-company';
-import { Company } from 'src/company/models/company.model';
 
 describe('getCompany', () => {
   const integrationTestManager = new IntegrationTestManager();
@@ -27,8 +27,8 @@ describe('getCompany', () => {
         )
           .query(
             gql`
-              query {
-                company($id: String!) {
+              query GetCompany($companyId: String!) {
+                company(id: $companyId) {
                   id
                   parentId
                   cost
@@ -43,7 +43,7 @@ describe('getCompany', () => {
               }
             `,
           )
-          .variables({ id: companyId });
+          .variables({ companyId });
         company = response.data.company[0];
       });
 

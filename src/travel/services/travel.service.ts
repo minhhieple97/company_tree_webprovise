@@ -1,6 +1,6 @@
+import { Travel } from '../models/travel.model';
+import { ApiService } from './../../api/services/api/api.service';
 import { Injectable } from '@nestjs/common';
-import { ApiService } from 'src/api/services/api/api.service';
-import { Travel } from 'src/travel/interface/travel.interface';
 
 @Injectable()
 export class TravelService {

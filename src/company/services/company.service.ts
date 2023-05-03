@@ -1,7 +1,7 @@
+import { Travel } from './../../travel/models/travel.model';
+import { TravelService } from './../../travel/services/travel.service';
+import { ApiService } from './../../api/services/api/api.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ApiService } from 'src/api/services/api/api.service';
-import { Travel } from 'src/travel/interface/travel.interface';
-import { TravelService } from 'src/travel/services/travel.service';
 import { Company } from '../models/company.model';
 
 @Injectable()
