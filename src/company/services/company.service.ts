@@ -1,7 +1,7 @@
 import { Travel } from './../../travel/models/travel.model';
 import { TravelService } from './../../travel/services/travel.service';
 import { ApiService } from './../../api/services/api/api.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { NotFoundException, Injectable } from '@nestjs/common';
 import { Company } from '../models/company.model';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class CompanyService {
     ])) as [Company[], Travel[]];
     const companyIdx = companies.findIndex((el) => el.id === companyId);
     if (companyIdx === -1) {
-      throw new BadRequestException(`company does not exist`);
+      throw new NotFoundException(`company does not exist`);
     }
     const company = companies[companyIdx];
     const travelsCost = this.travelService.generateTravelsCost(travels);

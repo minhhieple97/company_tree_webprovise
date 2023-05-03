@@ -3,7 +3,6 @@ import { CompanyModule } from './company/company.module';
 import { TravelModule } from './travel/travel.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
 import { ApiModule } from './api/api.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
